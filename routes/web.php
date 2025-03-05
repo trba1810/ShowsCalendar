@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\MovieController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -10,6 +11,9 @@ Route::get('/', function () {
 Route::get('/calendar', function () {
     return Inertia::render('calendar');
 })->name('CalendarPage');
+
+Route::get('/movies/search', [MovieController::class, 'search'])->name('movies.search');
+Route::get('/movies/{id}', [MovieController::class, 'show'])->name('movies.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
