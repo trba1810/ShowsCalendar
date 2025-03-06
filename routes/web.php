@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\ShowsController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -14,6 +15,12 @@ Route::get('/calendar', function () {
 
 Route::get('/movies/search', [MovieController::class, 'search'])->name('movies.search');
 Route::get('/movies/{id}', [MovieController::class, 'show'])->name('movies.show');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/shows/following', [ShowsController::class, 'following']);
+    Route::get('/shows/episodes', [ShowsController::class, 'getEpisodes']);
+    Route::post('/shows/{id}/follow', [ShowsController::class, 'toggleFollow']);
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
