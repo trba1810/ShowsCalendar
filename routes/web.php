@@ -15,11 +15,14 @@ Route::get('/calendar', function () {
 
 Route::get('/movies/search', [MovieController::class, 'search'])->name('movies.search');
 Route::get('/movies/{id}', [MovieController::class, 'show'])->name('movies.show');
+Route::get('/shows/{id}', [ShowsController::class, 'GetShowById'])->name('shows.getshowbyid');
+Route::get('/shows/monthly', [ShowsController::class, 'getMonthlyEpisodes'])->name('shows.monthly');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/shows/following', [ShowsController::class, 'following']);
     Route::get('/shows/episodes', [ShowsController::class, 'getEpisodes']);
     Route::post('/shows/{id}/follow', [ShowsController::class, 'toggleFollow']);
+    
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

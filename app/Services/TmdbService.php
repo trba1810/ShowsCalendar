@@ -88,6 +88,11 @@ class TmdbService
         return $this->get('/tv/on_the_air');
     }
 
+    public function getAllShows()
+    {
+        return $this->get('/ListOfShows');
+    }
+
     public function testConnection()
     {
         try {
@@ -95,5 +100,20 @@ class TmdbService
         } catch (\Exception $e) {
             return ['error' => $e->getMessage()];
         }
+    }
+
+    public function getTvShowDetails($showId)
+    {
+        return $this->get("tv/{$showId}", [
+            'language' => 'en-US',
+            'append_to_response' => 'seasons'
+        ]);
+    }
+
+    public function getTvShowSeason($showId, $seasonNumber)
+    {
+        return $this->get("tv/{$showId}/season/{$seasonNumber}", [
+            'language' => 'en-US'
+        ]);
     }
 }
