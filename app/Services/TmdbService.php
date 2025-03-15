@@ -80,7 +80,10 @@ class TmdbService
 
     public function getAiringToday()
     {
-        return $this->get('/tv/airing_today');
+        return $this->get('/tv/airing_today', [
+            'language' => 'en-US',
+            'timezone' => 'America/New_York' 
+        ]);
     }
 
     public function getOnTheAir()
@@ -102,17 +105,17 @@ class TmdbService
         }
     }
 
-    public function getTvShowDetails($showId)
+    public function getTvShowDetails($tmdbId)
     {
-        return $this->get("tv/{$showId}", [
+        return $this->get("tv/{$tmdbId}", [
             'language' => 'en-US',
             'append_to_response' => 'seasons'
         ]);
     }
 
-    public function getTvShowSeason($showId, $seasonNumber)
+    public function getTvShowSeason($tmdbId, $seasonNumber)
     {
-        return $this->get("tv/{$showId}/season/{$seasonNumber}", [
+        return $this->get("tv/{$tmdbId}/season/{$seasonNumber}", [
             'language' => 'en-US'
         ]);
     }

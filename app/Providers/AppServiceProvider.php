@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\TmdbService;
+use App\Services\TvMazeService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(TmdbService::class, function () {
             return new TmdbService();
+        });
+        $this->app->singleton(TvMazeService::class, function ($app) {
+            return new TvMazeService();
         });
     }
 
