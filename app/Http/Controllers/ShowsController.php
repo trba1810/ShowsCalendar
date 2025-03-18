@@ -30,16 +30,6 @@ class ShowsController extends Controller
         return response()->json($shows);
     }
 
-    public function airingToday()
-    {
-        try {
-            $shows = $this->tvmaze->getAiringToday();
-            return response()->json($shows);
-        } catch (\Exception $e) {
-            \Log::error('Error fetching airing shows: ' . $e->getMessage());
-            return response()->json(['error' => 'Failed to fetch airing shows'], 500);
-        }
-    }
 
     public function toggleFollow($id)
     {
@@ -229,4 +219,50 @@ class ShowsController extends Controller
             ], 500);
         }
     }
+
+    public function airingToday()
+    {
+        try {
+            Log::info('Starting airingToday request');
+            
+            $shows = $this->tvmaze->airingToday();
+            
+            if (empty($shows)) {
+                Log::warning('No shows found for today');
+                return response()->json([]);
+            }
+            
+            Log::info('Successfully fetched shows', ['count' => count($shows)]);
+            return response()->json($shows);
+            
+        } catch (\Exception $e) {
+            Log::error('Error in airingToday', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'error' => 'Failed to fetch airing shows',
+                'debug_message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getLatestEpisode($showId)
+{
+    try {
+        $episode = $this->tvmaze->getLatestEpisode($showId);
+        
+        if (!$episode) {
+            return response()->json(['message' => 'No aired episodes found'], 404);
+        }
+
+        return response()->json($episode);
+    } catch (\Exception $e) {
+        Log::error('Error getting latest episode', [
+            'show_id' => $showId,
+            'error' => $e->getMessage()
+        ]);
+        return response()->json(['error' => 'Failed to fetch latest episode'], 500);
+    }
+}
 }

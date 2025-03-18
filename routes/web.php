@@ -17,8 +17,9 @@ Route::get('/movies/search', [MovieController::class, 'search'])->name('movies.s
 Route::get('/movies/{id}', [MovieController::class, 'show'])->name('movies.show');
 Route::get('/shows/{id}', [ShowsController::class, 'show'])->name('shows.show');
 Route::get('/shows/monthly', [ShowsController::class, 'getMonthlyEpisodes'])->name('shows.monthly');
-Route::get('shows/airing-today', [ShowsController::class, 'airingToday'])->name('shows.airing-today');
+Route::get('/shows/airing-today', [ShowsController::class, 'airingToday'])->name('shows.airing-today');
 Route::get('/shows/{id}/details', [ShowsController::class, 'getTvShowDetails'])->name('shows.details');
+Route::get('/shows/{id}/latest-episode', [ShowsController::class, 'getLatestEpisode'])->name('shows.latest-episode');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/shows/following', [ShowsController::class, 'following']);
